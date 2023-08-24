@@ -32,7 +32,7 @@ jobs:
 
   deploy-dev:
     runs-on: 'ubuntu-latest'
-    environment: '${{ github.event.inputs.message }}'
+    environment: ${{ github.event.inputs.message }}
     needs: build-and-publish
     steps:
       - name: DEPLOY DEV
