@@ -2,11 +2,16 @@
 # This is a basic workflow to help you get started with Actions
 name: CI
 on:  
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
   workflow_dispatch:
+    inputs:
+      name:
+        type: choice
+        description: Which Env To Deploy
+        options: 
+        - dev
+        - qa
+        - stage
+        - prod
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -27,18 +32,9 @@ jobs:
 
   deploy-dev:
     runs-on: 'ubuntu-latest'
-    environment: 'dev'
+    environment: '${{ github.event.inputs.message }}'
     needs: build-and-publish
     steps:
       - name: DEPLOY DEV
         run: |
           echo "deploy dev"
-
-  deploy-prod:
-    runs-on: 'ubuntu-latest'
-    environment: 'prod'
-    needs: [build-and-publish, deploy-dev]
-    steps:
-      - name: DEPLOY PROD
-        run: |
-         echo deploy prod
