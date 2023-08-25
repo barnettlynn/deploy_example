@@ -16,6 +16,7 @@ jobs:
           echo Run Build Upload Artifact
   deploy-dev:
     environment: 'dev'
+    needs: [build]
     runs-on: ubuntu-latest
     steps:
       - name: Deploy Dev
