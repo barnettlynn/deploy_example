@@ -1,0 +1,50 @@
+# This is a basic workflow to help you get started with Actions
+name: CI
+on:  
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Test
+        run: echo Running Tests
+      - name: Build
+        run: |
+          echo Run Build Upload Artifact
+  deploy-dev:
+    environment: 'dev'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy Dev
+        run: |
+         echo Do a Deploy
+
+  deploy-qa:
+    runs-on: 'ubuntu-latest'
+    environment: 'qa'
+    needs: [build,deploy-dev]
+    steps:
+      - name: Deploy QA
+        run: |
+          echo "deploy QA"
+          
+  deploy-stage:
+    runs-on: 'ubuntu-latest'
+    environment: 'stage'
+    needs: [build,deploy-dev, deploy-qa]
+    steps:
+      - name: Deploy Stage
+        run: |
+         echo deploy Stage
+         
+  deploy-prod:
+    runs-on: 'ubuntu-latest'
+    environment: 'prod'
+    needs: [build,deploy-dev, deploy-qa, deploy-stage]
+    steps:
+      - name: Deploy Prod
+        run: |
+         echo deploy Stag
